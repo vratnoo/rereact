@@ -4,24 +4,18 @@ import { Link } from 'react-router-dom'
 import Context from '../auth/Store'
 import Cookies from 'js-cookie'
 import axios from 'axios'
+import { app } from '../firebase-config'
+import {signOut,getAuth} from 'firebase/auth'
 
 export default function Navigaion(){
     const [state,dispatch] = useContext(Context)
     const handleSubmit = (e)=>{
         e.preventDefault()
-        axios.get("http://localhost:8080/user/logout").then((res)=>{
-            Cookies.remove('token')
-            toast.success(res.data.msg)
-            dispatch({type:'USER_LOGEDOUT'})
-
-            
-    }).catch(({response})=>{
-        if(response.data.msg){
-            toast.error(response.data.msg)
-        }
-        console.log(response)
-    })
+        const auth = getAuth(app)
+        signOut(auth);
+        dispatch({type:'USER_LOGEDOUT'})
     }
+  
     return (
         <nav>
                     <li><Link to="/">Home</Link></li>

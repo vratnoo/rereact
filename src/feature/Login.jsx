@@ -2,42 +2,34 @@ import React, { useEffect } from 'react'
 import { useContext } from 'react'
 import Context from '../auth/Store'
 import toast from 'react-hot-toast';
-import axios from 'axios';
-import Cookies from 'js-cookie'
 import { Navigate, useNavigate } from 'react-router-dom';
+import { app } from '../firebase-config';
+import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword} from 'firebase/auth'
 
+import { async } from '@firebase/util';
 const Login = ()=>{
     const [state,dispatch] = useContext(Context)
     const navigate = useNavigate()
     
   
-    const {username,password} = state.credential
-    const data = {username,password}
-    const token = Cookies.get('token')
-    const handleSubmit = (e)=>{
-        e.preventDefault()
-        if(token){
-            data.sessionID = token
-        }
-         axios.post("http://localhost:8080/user/login",data).then((res)=>{
-            
-            if(res.status==200 && res.data.sessionID){
-                Cookies.set('token',res.data.sessionID)
-                toast.success(res.data.msg)
-                dispatch({type:'USER_AUTHENICATED'})
-            }
-            dispatch({type:'CRED_SUBMITED'})
-            // navigate('/')
+    const {email,password} = state.credential
+    const data = {email,password}
 
-                
-        }).catch(({response})=>{
-            if(response.data.msg){
-                toast.error(response.data.msg)
-            }
-            console.log(response)
-        })
+
+    const handleSubmit = async()=>{
+        const authentication = getAuth(app)
+        try {
+            await signInWithEmailAndPassword(authentication,email,password)
+            dispatch({type:'USER_AUTHENICATED'})
+          } catch (err) {
+            console.error(err);
+            alert(err.message);
+          }
+
 
     }
+       
+    
     const handleChange = (e)=>{
             const [name,value] = [e.target.name,e.target.value]
             dispatch({type:'CRED_CHANGE',data:{[name]:value}})
@@ -46,8 +38,8 @@ const Login = ()=>{
         <>
         <h1>Loginfomrm auth</h1>
           <form action="">
-             <label htmlFor="">UserName</label>
-             <input type="text" name="username" value={username}  onChange={handleChange}/>
+             <label htmlFor="">Email</label>
+             <input type="text" name="email" value={email}  onChange={handleChange}/>
              <label htmlFor="password">password</label>
              <input type="password" name="password" value={password} onChange={handleChange} />
           </form>

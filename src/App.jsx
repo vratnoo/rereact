@@ -4,23 +4,21 @@ import Home from './feature/Home'
 import Register from './feature/Register'
 import { Route,Routes } from 'react-router-dom'
 import Navigaion from './components/Navigation'
-import Cookies from 'js-cookie'
-import axios from 'axios'
 import { useContext } from 'react'
-
 import { Toaster } from 'react-hot-toast';
 import Context from './auth/Store'
 import Protected from './auth/Protected'
 import Profile from './feature/Profile'
+
 const App = ()=>{
    
     const [state,dispatch] = useContext(Context)
-    useEffect(()=>{
-        const token = Cookies.get('token')
-        if(token){
-            dispatch({type:'USER_AUTHENICATED'})
-        }
-    },[])
+    // useEffect(()=>{
+    //     const token = Cookies.get('token')
+    //     if(token){
+    //         dispatch({type:'USER_AUTHENICATED'})
+    //     }
+    // },[])
     
     return(
         <>
