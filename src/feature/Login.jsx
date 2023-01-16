@@ -19,11 +19,15 @@ const Login = ()=>{
     const handleSubmit = async()=>{
         const authentication = getAuth(app)
         try {
-            await signInWithEmailAndPassword(authentication,email,password)
+            const res = await signInWithEmailAndPassword(authentication,email,password)
+            console.log(res)
+            sessionStorage.setItem('Token', res._tokenResponse.idToken)
             dispatch({type:'USER_AUTHENICATED'})
           } catch (err) {
             console.error(err);
             alert(err.message);
+          }finally{
+            dispatch({type:"CRED_SUBMITED"})
           }
 
 

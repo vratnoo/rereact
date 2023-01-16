@@ -9,16 +9,28 @@ import { Toaster } from 'react-hot-toast';
 import Context from './auth/Store'
 import Protected from './auth/Protected'
 import Profile from './feature/Profile'
+import { app } from './firebase-config'
+import { getAuth,signInWithCustomToken,onAuthStateChanged } from 'firebase/auth'
 
 const App = ()=>{
    
-    const [state,dispatch] = useContext(Context)
-    // useEffect(()=>{
-    //     const token = Cookies.get('token')
-    //     if(token){
-    //         dispatch({type:'USER_AUTHENICATED'})
-    //     }
-    // },[])
+    const [state, dispatch] = useContext(Context);
+    useEffect(() => {
+        
+            const authentication  = getAuth(app)
+             onAuthStateChanged(authentication,(user)=>{
+                if(user){
+                    dispatch({type:"USER_AUTHENICATED"})
+                }else{
+                    
+                    dispatch({type:"USER_LOGEDOUT"})
+                }
+            })
+                    
+     
+        
+     
+    }, []);
     
     return(
         <>

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Context from '../auth/Store';
 import { app } from '../firebase-config';
 import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword} from 'firebase/auth'
-import { getFirestore,collection, addDoc, doc,getDocs,setDoc,deleteDoc,updateDoc } from "firebase/firestore/lite";
+import { where,query,getFirestore,collection, addDoc, doc,getDocs,setDoc,deleteDoc,updateDoc } from "firebase/firestore/lite";
 const firestore = getFirestore(app)
 
 export const todayDate = ()=>{
@@ -25,13 +25,25 @@ const Register = ()=>{
         e.preventDefault()
         const authentication = getAuth(app)
         const data = {username:username,Role:"normal",created:todayDate()}
+        const q  = query(collection(firestore,'users'),where("username","==",username))
+        const queryFetch = await getDocs(q)
+        if(queryFetch.docs.length!==0){
+            toast.error('Username already exist')
+            return 
+        }
         try {
             const res = await createUserWithEmailAndPassword(authentication,email,password)
             const userRef = doc(collection(firestore,'users'));
-            await setDoc(userRef, {...data,id:res.user.uid}); 
+            await setDoc(userRef, {...data,id:res.user.uid})
+            
+           
+
           } catch (err) {
             console.error(err);
             alert(err.message);
+          }finally{
+            dispatch({type:"CRED_SUBMITED"})
+            navigate('/login')
           }
 
 
