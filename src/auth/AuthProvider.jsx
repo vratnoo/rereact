@@ -3,15 +3,21 @@ import Context from './Store'
 
 const initailState = {
     credential:{username:"",password:"",email:""},
-    auth:false
+    auth:false,
+    user:{},
+    profile:{}
 }
 const authReducer = (state,action)=>{
+    const data = action.data
     switch (action.type) {
         case 'USER_AUTHENICATED':
-            return {...state,auth:true}
+            return {...state,auth:true,user:action.data}
+            break;
+        case 'USER_PROFILE_UPDATE':
+            return {...state,auth:true,profile:action.data}
             break;
         case 'USER_LOGEDOUT':
-            return {...state,auth:false}
+            return {...state,auth:false,user:{}}
             break;
         case 'CRED_CHANGE':
             return {...state,credential:{...state.credential,...action.data}}

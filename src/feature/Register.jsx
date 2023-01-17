@@ -3,10 +3,9 @@ import React, { useContext, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import Context from '../auth/Store';
-import { app } from '../firebase-config';
-import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword} from 'firebase/auth'
+import { db,auth } from '../firebase-config';
+import {signInWithEmailAndPassword,createUserWithEmailAndPassword} from 'firebase/auth'
 import { where,query,getFirestore,collection, addDoc, doc,getDocs,setDoc,deleteDoc,updateDoc } from "firebase/firestore/lite";
-const firestore = getFirestore(app)
 
 export const todayDate = ()=>{
     const today = new Date().toISOString().slice(0, 10)
@@ -23,20 +22,17 @@ const Register = ()=>{
     })
     const handleSubmit = async(e)=>{
         e.preventDefault()
-        const authentication = getAuth(app)
         const data = {username:username,Role:"normal",created:todayDate()}
-        const q  = query(collection(firestore,'users'),where("username","==",username))
+        const q  = query(collection(db,'users'),where("username","==",username))
         const queryFetch = await getDocs(q)
         if(queryFetch.docs.length!==0){
             toast.error('Username already exist')
             return 
         }
         try {
-            const res = await createUserWithEmailAndPassword(authentication,email,password)
-            const userRef = doc(collection(firestore,'users'));
+            const res = await createUserWithEmailAndPassword(auth,email,password)
+            const userRef = doc(collection(db,'users'));
             await setDoc(userRef, {...data,id:res.user.uid})
-            
-           
 
           } catch (err) {
             console.error(err);

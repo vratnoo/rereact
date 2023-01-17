@@ -3,10 +3,9 @@ import { useContext } from 'react'
 import Context from '../auth/Store'
 import toast from 'react-hot-toast';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { app } from '../firebase-config';
-import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword} from 'firebase/auth'
-
-import { async } from '@firebase/util';
+import { db,auth } from '../firebase-config';
+import {signInWithEmailAndPassword, createUserWithEmailAndPassword,signOut} from 'firebase/auth'
+import { where,query,getFirestore,collection, addDoc, doc,getDocs,setDoc,deleteDoc,updateDoc } from "firebase/firestore/lite";
 const Login = ()=>{
     const [state,dispatch] = useContext(Context)
     const navigate = useNavigate()
@@ -17,17 +16,21 @@ const Login = ()=>{
 
 
     const handleSubmit = async()=>{
-        const authentication = getAuth(app)
         try {
-            const res = await signInWithEmailAndPassword(authentication,email,password)
-            console.log(res)
-            sessionStorage.setItem('Token', res._tokenResponse.idToken)
-            dispatch({type:'USER_AUTHENICATED'})
+            const res = await signInWithEmailAndPassword(auth,email,password)
+            const user = res.user
+
+            
+            toast.success("user logged in sucessfully");
+            dispatch({type:'USER_AUTHENICATED',data:user})
+            
+
           } catch (err) {
             console.error(err);
             alert(err.message);
           }finally{
             dispatch({type:"CRED_SUBMITED"})
+            navigate('/')
           }
 
 
