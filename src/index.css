@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.error{
+  background-color: rgb(245, 209, 209);
+  color: red;
+}
