@@ -3,6 +3,8 @@ import { db,auth } from '../firebase-config';
 import { where,query,getFirestore,collection, addDoc, doc,getDocs,setDoc,deleteDoc,updateDoc } from "firebase/firestore/lite";
 import Context from '../auth/Store';
 import { toast } from 'react-hot-toast';
+import { useFormik } from 'formik';
+import * as Yup from 'yup'
 const villageCodes = [
     {'name':'No selected',code:0},
     {'name':'shiv',code:124554},
@@ -17,10 +19,35 @@ const initialState = {
     landId:"",
     villageCode:{name:"",code:null}
 }
+
+const validate = values=>{
+    const errors = {}
+    if(!values.registrationId){
+        errors.registrationId = "Required"
+    }
+    if(!values.landAccount){
+        errors.landAccount  = "Required"
+    }
+    if(!values.landId){
+        errors.landId = "Required"
+    }
+    if(!values.villageCode.code==0){
+        errors.villageCode = "Please select village"
+    }
+    return errors
+}
+
 const AddData = ()=>{
     const [landData,setLandData] = useState(initialState)
     const [data,setData] = useState(null)
     const [state,dispatch] = useContext(Context)
+    const formik = useFormik({
+        initialValues:initialState,
+        validate,
+        onSubmit:(values)=>{
+            console.log(values)
+        },
+    })
 
     useEffect(() => {
     fetch("data.json")
@@ -60,23 +87,25 @@ const AddData = ()=>{
     return (
         <>
             <p>Add form for data</p>
-            <form action="" onSubmit={handleSubmit}>
+            <form action="" onSubmit={formik.handleSubmit}>
                 <label htmlFor="">Registration Id</label>
-                <input type="text"  name="registrationId" value={landData.registrationId} onChange={handleChange}/>
+                <input type="text"  name="registrationId" value={formik.values.registrationId}  onBlur={formik.handleBlur} onChange={formik.handleChange}/>
+                {formik.errors.registrationId ? <div>{formik.errors.registrationId}</div> : null}
                 <label htmlFor="">Land Account (Khata no)</label>
-                <input type="text"  name="landAccount" value={landData.landAccount} onChange={handleChange} />
+                <input type="text"  name="landAccount" value={formik.values.landAccount}  onBlur={formik.handleBlur} onChange={formik.handleChange} />
                 <label htmlFor="">Land Id (Khasra No)</label>
-                <input type="text"  name="landId"  value={landData.landId} onChange={handleChange} />
+                <input type="text"  name="landId"  value={formik.values.landId}  onBlur={formik.handleBlur} onChange={formik.handleChange} />
                 <label htmlFor="">Select Village</label>
-                <select name="villageCode" id="" value={landData.villageCode.code} onChange={handleChange}>
+                <select name="villageCode" id="" value={formik.values.villageCode.code}  onBlur={formik.handleBlur} onChange={formik.handleChange}>
                 {villageCodes.map((village,index)=>{
                     return (<option key={index} value={village.code}>{village.name}</option> )
                 })}
                 </select>
                 <button type="submit">Submit</button>
+            </form>
 
                     
-            </form>
+            
         </>
     )
 }
