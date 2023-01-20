@@ -14,6 +14,8 @@ import { db,auth } from './firebase-config';
 import { toast } from 'react-hot-toast'
 import {signInWithEmailAndPassword,onAuthStateChanged, createUserWithEmailAndPassword,signOut} from 'firebase/auth'
 import { where,query,getFirestore,collection, addDoc, doc,getDocs,setDoc,deleteDoc,updateDoc } from "firebase/firestore/lite";
+import Layout from './layout/Layout'
+import ViewData from './feature/ViewData'
 
 const App = ()=>{
    
@@ -42,9 +44,8 @@ const App = ()=>{
     
     return(
         <>
-
+        
         <Toaster/>
-        <Navigaion/>
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/profile" element={
@@ -57,6 +58,13 @@ const App = ()=>{
                         <AddData/>        
                     </Protected>
                 }/>
+                
+                <Route path="/viewData" element={
+                    <Protected auth={state.auth}>
+                        <ViewData/>        
+                    </Protected>
+                }/>
+
                 <Route  path="/login" element={
                     <Protected auth={!state.auth}>
                         <Login/>        

@@ -26,8 +26,8 @@ const AddData = ()=>{
     const [state,dispatch] = useContext(Context)
 
     const validationSchema = Yup.object({
-      registrationId: Yup.string().min(5, "Registration id should be 5 charecter ").required(),
-      landAccount: Yup.number().required(),
+      registrationId: Yup.string().min(5, "Registration id should be 5 charecter ").required("registration is required"),
+      landAccount: Yup.number("Land account should be a number").required(),
       landId: Yup.string().matches(/^(\d+\/\d+|\d+)$/, "value shoud be a valid khasra no  ").required("land id is required "),
       villageCode: Yup.object({code: Yup.number().notOneOf([0], "Invalid selection")})
     
@@ -77,8 +77,8 @@ const AddData = ()=>{
     }
 
     return (
-        <>
-            <p>Add form for data</p>
+        <div className='form_wrapper'>
+            <h3>Add form for data</h3>
             <form action="" onSubmit={formik.handleSubmit}>
                 <label htmlFor="">Registration Id</label>
                 <input type="text"  name="registrationId" value={formik.values.registrationId}  onBlur={formik.handleBlur}  onChange={formik.handleChange}/>
@@ -101,7 +101,7 @@ const AddData = ()=>{
 
                     
             
-        </>
+        </div>
     )
 }
 export default AddData

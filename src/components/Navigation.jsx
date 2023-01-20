@@ -18,13 +18,16 @@ export default function Navigaion(){
   
     return (
         <nav>
-                    <li><Link to="/">Home</Link></li>
+                 <ul>
+                 <li><Link to="/">Home</Link></li>
                     {<li><Link to="/Profile">Profile</Link></li>}
                     
                     {(state.auth)?<li><Link to="/addData">Add Data</Link></li>:null}
+                    {(state.auth)?<li><Link to="/viewData">View Data</Link></li>:null}
                     {(!state.auth)?<li><Link to="/login">Login</Link></li>:null}
                     {(!state.auth)?<li><Link to="/register">Register</Link></li>:null}
                     {(state.auth)?<li><Link onClick={handleSubmit} >Logout</Link></li>:null}
+                 </ul>
                     
         </nav>
     )

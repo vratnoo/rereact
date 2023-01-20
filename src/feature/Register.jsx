@@ -50,8 +50,8 @@ const Register = ()=>{
    }
 
     return (
-        <>
-        <h1>Register Form</h1>
+        <div className='form_wrapper'>
+        <h3>Register Form</h3>
          <form action="" onSubmit={handleSubmit}>
             <label htmlFor="">Username</label>
             <input type="text" name='username' onChange={handleChange}/>
@@ -61,7 +61,7 @@ const Register = ()=>{
             <input type="passowrd" name='password' onChange={handleChange} />
             <input type="submit" value="Submit" />
          </form>
-        </>
+        </div>
 
     )
 }

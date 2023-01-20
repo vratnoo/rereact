@@ -42,16 +42,16 @@ const Login = ()=>{
             dispatch({type:'CRED_CHANGE',data:{[name]:value}})
    }
     return (
-        <>
-        <h1>Loginfomrm auth</h1>
+        <div className='form_wrapper'>
+        <h3>Login Form</h3>
           <form action="">
              <label htmlFor="">Email</label>
-             <input type="text" name="email" value={email}  onChange={handleChange}/>
+             <input type="text" name="email" value={email} placeholder="name@email.com"  onChange={handleChange}/>
              <label htmlFor="password">password</label>
-             <input type="password" name="password" value={password} onChange={handleChange} />
+             <input type="password" name="password" value={password} placeholder="password" onChange={handleChange} />
           </form>
          <button onClick={handleSubmit}>Login</button>
-        </>
+        </div>
     )
 }
 // const Loginss  = (props)=>{
