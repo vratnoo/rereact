@@ -180,3 +180,17 @@ th, td {
 th {
     background-color: #f2f2f2;
 }
+
+.radioGroup{
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin: 0 0 1rem;
+    font-size: 0.8rem;
+}
+.radioGroup i {
+    margin-right: 10px;
+}
+.radioGroup label {
+    /* margin: 0px 10px; */
+}
