@@ -8,7 +8,7 @@ const Profile = ()=>{
     const [state,dispatch] = useContext(Context)
     
     useEffect(()=>{
-
+        console.log()
     },[state.profile])
 
     const profile = state.profile

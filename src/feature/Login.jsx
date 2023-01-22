@@ -15,7 +15,8 @@ const Login = ()=>{
     const data = {email,password}
 
 
-    const handleSubmit = async()=>{
+    const handleSubmit = async(e)=>{
+      e.preventDefault()
         try {
             const res = await signInWithEmailAndPassword(auth,email,password)
             const user = res.user
@@ -42,16 +43,23 @@ const Login = ()=>{
             dispatch({type:'CRED_CHANGE',data:{[name]:value}})
    }
     return (
-        <div className='form_wrapper'>
+        <div className='form'>
         <h3>Login Form</h3>
-          <form action="">
+          <form className="login-form" action="" onSubmit={handleSubmit}>
+            <div className="input-group">
              <label htmlFor="">Email</label>
              <input type="text" name="email" value={email} placeholder="name@email.com"  onChange={handleChange}/>
+            </div>
+            <div className="input-group">
              <label htmlFor="password">password</label>
              <input type="password" name="password" value={password} placeholder="password" onChange={handleChange} />
+            </div>
+            <button type='submit'>Login</button>
           </form>
-         <button onClick={handleSubmit}>Login</button>
         </div>
+
+
+
     )
 }
 // const Loginss  = (props)=>{

@@ -6,13 +6,15 @@ import { BrowserRouter } from 'react-router-dom';
 // import reportWebVitals from './reportWebVitals';
 import AuthProvider from './auth/AuthProvider'
 import Layout from './layout/Layout';
+import { Toaster } from 'react-hot-toast';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
+    <>
      <AuthProvider>
         <BrowserRouter>
         <Layout>
+        <Toaster/>
 
             <App/>
 
@@ -20,7 +22,7 @@ root.render(
         </BrowserRouter>
     </AuthProvider>
 
-    </React.StrictMode>
+    </>
 );
 
 // If you want to start measuring performance in your app, pass a function

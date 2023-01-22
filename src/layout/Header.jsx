@@ -5,16 +5,29 @@ const Header = ({childern})=>{
 
     return (
         <header>
+                
         <div className="header_wrapper">
+            <div className="nav-container">
+                <div className="brand">
+                    <h1>PM KISAN SAMMAN NIDHI YOJNA</h1>
+                    <p>A portal for collecting land seeding data for futher process.</p>
+                </div>
+            </div>
 
-        <div className='brand'>
-            <div className="brand_wrapper">
-                <h1>PM KISAN NIDHI YOJNA</h1>
-                <p>A portal for collecting land seeding data for futher process.</p>
+        </div>
+
+        <div className="nav-wrapper">
+            <div className="nav-container">
+                <Navigaion/>
             </div>
         </div>
-        <Navigaion/>
-        </div>
+
+
+
+
+        
+       
+
             
         </header>
     )

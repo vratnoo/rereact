@@ -16,13 +16,19 @@ import {signInWithEmailAndPassword,onAuthStateChanged, createUserWithEmailAndPas
 import { where,query,getFirestore,collection, addDoc, doc,getDocs,setDoc,deleteDoc,updateDoc } from "firebase/firestore/lite";
 import Layout from './layout/Layout'
 import ViewData from './feature/ViewData'
+import { useState } from 'react'
 
 const App = ()=>{
    
     const [state, dispatch] = useContext(Context);
+    const [emailVerified,setEmailVerified] = useState(true)
+    const [count,setCount] = useState(0)
+
     useEffect(() => {
       onAuthStateChanged(auth, async(user) => {
         if (user) {
+            
+            
           // getting user details from store
           const q = query(collection(db, "users"), where("id", "==", user.uid));
           const queryFetch = await getDocs(q);
@@ -32,20 +38,38 @@ const App = ()=>{
             return;
           }
           const profile = queryFetch.docs.map((doc)=>doc.data())[0]
-          toast.success("user logged in sucessfully");
+
+         
+
           dispatch({type:"USER_PROFILE_UPDATE",data:profile})
           dispatch({ type: "USER_AUTHENICATED", data: user });
+
+          if(user.emailVerified===false){
+            console.log("i am here ",user.emailVerified)
+            toast.error('Please verify your email address')
+            setEmailVerified(false)
+            return
+         }
+
         } else {
-            toast.error("user logged out in sucessfully"); 
-          dispatch({ type: "USER_LOGEDOUT" });
+            setEmailVerified(true)
+            toast.error("User No longer Logged in"); 
+            dispatch({ type: "USER_LOGEDOUT" });
         }
       });
+
     }, []);
+
+    if(state.auth && !emailVerified){
+        console.log(auth.currentUser)
+        console.log('auth',state.auth,emailVerified)
+        return (<EmailVerification/>)
+    }
     
     return(
         <>
         
-        <Toaster/>
+        
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/profile" element={
@@ -78,6 +102,16 @@ const App = ()=>{
         
         </>
     )
+}
+
+
+function EmailVerification() {
+    return (
+        <div className="email">
+            <h1>Please Verify your Email address.</h1>
+            <p>Check your Inbox</p>
+        </div>
+      );
 }
 
 export default App

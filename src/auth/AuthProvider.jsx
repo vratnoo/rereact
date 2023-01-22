@@ -17,7 +17,7 @@ const authReducer = (state,action)=>{
             return {...state,auth:true,profile:action.data}
             break;
         case 'USER_LOGEDOUT':
-            return {...state,auth:false,user:{}}
+            return {...state,auth:false,user:{},profile:{}}
             break;
         case 'CRED_CHANGE':
             return {...state,credential:{...state.credential,...action.data}}

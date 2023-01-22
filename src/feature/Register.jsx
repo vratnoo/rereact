@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import Context from '../auth/Store';
 import { db,auth } from '../firebase-config';
-import {signInWithEmailAndPassword,createUserWithEmailAndPassword} from 'firebase/auth'
+import {signInWithEmailAndPassword,createUserWithEmailAndPassword, sendEmailVerification} from 'firebase/auth'
 import { where,query,getFirestore,collection, addDoc, doc,getDocs,setDoc,deleteDoc,updateDoc } from "firebase/firestore/lite";
 
 export const todayDate = ()=>{
@@ -31,6 +31,9 @@ const Register = ()=>{
         }
         try {
             const res = await createUserWithEmailAndPassword(auth,email,password)
+            sendEmailVerification(res.user).then(()=>{
+                alert("a email link is sent")
+            })
             const userRef = doc(collection(db,'users'));
             await setDoc(userRef, {...data,id:res.user.uid})
 
@@ -50,16 +53,25 @@ const Register = ()=>{
    }
 
     return (
-        <div className='form_wrapper'>
+        <div className='form'>
         <h3>Register Form</h3>
-         <form action="" onSubmit={handleSubmit}>
-            <label htmlFor="">Username</label>
-            <input type="text" name='username' onChange={handleChange}/>
-            <label htmlFor="">Email</label>
-            <input type="text" name='email' onChange={handleChange} />
-            <label htmlFor="">Password</label>
-            <input type="passowrd" name='password' onChange={handleChange} />
-            <input type="submit" value="Submit" />
+         <form className="login-form" action="" onSubmit={handleSubmit}>
+            <div className="input-group">
+                <label htmlFor="">Username</label>
+                <input type="text" name='username' onChange={handleChange}/>
+
+            </div>
+            <div className="input-group">
+                <label htmlFor="">Email</label>
+                <input type="text" name='email' onChange={handleChange} />
+                
+            </div>
+            <div className="input-group">
+                <label htmlFor="">Password</label>
+                <input type="passowrd" name='password' onChange={handleChange} />
+            </div>
+            <button type="submit" value="Submit" >Register</button>
+                
          </form>
         </div>
 
