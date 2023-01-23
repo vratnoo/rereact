@@ -41,7 +41,7 @@ const ViewData  = ()=>{
                                 <td>{data.fatherName}</td>
                                 <td>{data.landAccount}</td>
                                 <td>{data.landId}</td>
-                                <td> {data.attechment && <a href={data.attechment} target="_blank">Download</a>}</td>
+                                <td> {data.attechment && <a href={data.attechment} style={{color:"green"}} target="_blank">Download</a>}</td>
                         
                             </tr>
                             )

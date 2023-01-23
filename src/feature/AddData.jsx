@@ -41,7 +41,7 @@ const initialState = {
     registrationId:"",
     farmerName:"",
     fatherName:"",
-    typeOfMutation:"",
+    typeOfMutation:"3",
     dateOfMutation:"",
     landTransferDoneBefore01022019:0,
     landOwnershipType:"2",
@@ -102,6 +102,7 @@ const AddDataNext = ({regId})=>{
         error:"Error while loading villages"
       })
   }, []);
+  
 
     const handleSubmit = async(landData)=>{
         if(!downloadURL){
@@ -185,10 +186,10 @@ const AddDataNext = ({regId})=>{
 
                 <div className="input-group">
                      <label htmlFor="">Land Transfer Method</label>
-                    <select name="typeOfMutation" id="typeOfMutation" onBlur={formik.handleBlur}  onChange={formik.handleChange}>
+                    <select name="typeOfMutation" id="typeOfMutation" value={formik.values.typeOfMutation} onBlur={formik.handleBlur}  onChange={formik.handleChange}>
                         <option value="1">Death of Husband</option>
                         <option value="2">Death of Father</option>
-                        <option selected="selected" value="3">Ancester Land (Virasat)</option>
+                        <option value="3">Ancester Land (Virasat)</option>
                         <option value="4">Purchase of Land</option>
                         <option value="5">Gifted</option>
                         <option value="6">Land Grant Allotment</option>
@@ -232,8 +233,8 @@ const AddDataNext = ({regId})=>{
                 <div className="input-group">
                     <label htmlFor="">LandTransferDoneBefore01022019</label>
                     <select name="landTransferDoneBefore01022019" id="" onBlur={formik.handleBlur} value={formik.values.landTransferDoneBefore01022019}  onChange={formik.handleChange}>
-                        <option value="0">Before</option>
-                        <option value="1">After</option>
+                        <option value="1">Before</option>
+                        <option value="2">After</option>
                     </select>
                 
                 </div>
@@ -335,20 +336,45 @@ const DataView = ({data})=>{
         console.log("data",data)
     },[])
     return(
-        <tbody>
-      
+        <table>
+            <thead>
                 <tr>
-            
-                <td>{data.registrationId}</td>
-                <td>{data.farmerName}</td>
-                <td>{data.fatherName}</td>
-                <td>{data.landAccount}</td>
-                <td>{data.landId}</td>
-                <td> {data.attechment && <a href={data.attechment} target="_blank">Download</a>}</td>
-            </tr>
+                    <th>Field</th>
+                    <th>Field Details</th>
+                </tr>
+            </thead>
+        
+            <tbody>
+                    <tr>
+                    <td>Registration Id</td> <td>{data.registrationId}</td>
+                    </tr>
+                    <tr>
+                    <td>Farmer Name</td> <td>{data.farmerName}</td>
+                    </tr>
+                    <tr>
+                    <td>Father/Husband Name</td> <td>{data.fatherName}</td>
+                    </tr>
+                    <tr>
+                    <td>Land Account No.(खाता संख्या)</td><td>{data.landAccount}</td>
+                    </tr>
+                    <tr>
+                    <td> Land Id (खसरा न. )</td> <td>{data.landId}</td>
+                    </tr>
+                    <tr>
+                    <td>Download</td> <td> {data.attechment && <a href={data.attechment} target="_blank">Download</a>}</td>
+                    </tr>
+            </tbody>
+        </table>
+                    
+
+
+                   
+                    
+                    
+                    
         
           
-    </tbody>
+
         
         
     )
