@@ -360,35 +360,48 @@ const DataView = ({data})=>{
         console.log("data",data)
     },[])
     return(
-        <table>
-            <thead>
-                <tr>
-                    <th>Field</th>
-                    <th>Field Details</th>
-                </tr>
-            </thead>
-        
-            <tbody>
+        <div className="dataView">
+            <div className="hero">
+                <h1>You Data is Saved Successfully.</h1>
+                <p>Your data further processed and will be sent to pmkisan offical portal.</p>
+            </div>
+            <table>
+                <thead>
                     <tr>
-                    <td>Registration Id</td> <td>{data.registrationId}</td>
+                        <th>Field</th>
+                        <th>Details</th>
                     </tr>
-                    <tr>
-                    <td>Farmer Name</td> <td>{data.farmerName}</td>
-                    </tr>
-                    <tr>
-                    <td>Father/Husband Name</td> <td>{data.fatherName}</td>
-                    </tr>
-                    <tr>
-                    <td>Land Account No.(खाता संख्या)</td><td>{data.landAccount}</td>
-                    </tr>
-                    <tr>
-                    <td> Land Id (खसरा न. )</td> <td>{data.landId}</td>
-                    </tr>
-                    <tr>
-                    <td>Download</td> <td> {data.attechment && <a href={data.attechment} target="_blank">Download</a>}</td>
-                    </tr>
-            </tbody>
-        </table>
+                </thead>
+            
+                <tbody>
+                        <tr>
+                        <td>Registration Id</td> <td>{data.registrationId}</td>
+                        </tr>
+                        <tr>
+                        <td>Farmer Name</td> <td>{data.farmerName}</td>
+                        </tr>
+                        <tr>
+                        <td>Father/Husband Name</td> <td>{data.fatherName}</td>
+                        </tr>
+                        <tr>
+                        <td>Land Account No.(खाता संख्या)</td><td>{data.landAccount}</td>
+                        </tr>
+                        <tr>
+                        <td> Land Id (खसरा न. )</td> <td>{data.landId}</td>
+                        </tr>
+                        <tr>
+                        <td> Land Area (रकबा)</td> <td>{data.landArea}</td>
+                        </tr>
+                        <tr>
+                        <td> Village </td> <td>{data.villageCode.name}</td>
+                        </tr>
+                        <tr>
+                        <td>Download</td> <td className='success'> {data.attechment && <a href={data.attechment} target="_blank">Download</a>}</td>
+                        </tr>
+                </tbody>
+            </table>
+
+        </div>
                     
 
 

@@ -32,7 +32,16 @@ const Register = ()=>{
         try {
             const res = await createUserWithEmailAndPassword(auth,email,password)
             sendEmailVerification(res.user).then(()=>{
-                alert("a email link is sent")
+                // alert("a email link is sent")
+                toast('धन्यवाद हमने आपकी पंजीकृत ई मेल पर कान्फर्मैशन लिंक भेजा  है उसे क्लिक कर आप आपने पंजीकरण को प्रमाणित करे! ', {
+                    icon: '👏',
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                      },
+                      duration: 6000,
+                  });
             })
             const userRef = doc(collection(db,'users'));
             await setDoc(userRef, {...data,id:res.user.uid})

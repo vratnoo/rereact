@@ -10,7 +10,7 @@ const Header = ({childern})=>{
             <div className="nav-container">
                 <div className="brand">
                     <h1>PM KISAN SAMMAN NIDHI YOJNA</h1>
-                    <p>A portal for collecting land seeding data for futher process.</p>
+                    <p>A portal for collecting land seeding data for further process.</p>
                 </div>
             </div>
 

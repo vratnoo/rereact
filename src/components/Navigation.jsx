@@ -21,9 +21,9 @@ export default function Navigaion(){
         <nav>
                  <ul>
                  <li><Link to="/">Home</Link></li>
-                    {<li><Link to="/Profile">Profile</Link></li>}
-                    {(state.auth)?<li><Link to="/addData">Add Data</Link></li>:null}
-                    {(state.auth)?<li><Link to="/viewData">View Data</Link></li>:null}
+                    {/* {<li><Link to="/Profile">Profile</Link></li>} */}
+                    {(state.auth)?<li><Link to="/addData">Land Seeding</Link></li>:null}
+                    {(state.auth)?<li><Link to="/viewData">View Land seeding</Link></li>:null}
                     {(!state.auth)?<li><Link to="/login">Login</Link></li>:null}
                     {(!state.auth)?<li><Link to="/register">Register</Link></li>:null}
                  </ul>

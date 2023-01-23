@@ -13,8 +13,14 @@ const Profile = ()=>{
 
     const profile = state.profile
     return (
+        
         <>
-            <h1>Profile</h1>
+
+        <div className="profile">
+            <div className="card">
+                <h1>Welcome : {profile.username}</h1>
+            </div>
+        <h1>Profile</h1>
         {state.profile && (
             <div>
             <p>user id : {profile.id}</p>
@@ -24,6 +30,9 @@ const Profile = ()=>{
             </div>
 
         )}
+
+        </div>
+           
         
 
         </>
