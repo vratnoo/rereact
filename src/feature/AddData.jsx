@@ -58,8 +58,7 @@ const AddDataNext = ({regId})=>{
     const [dataSubmited,setDataSubmited] = useState(false)
     const [state,dispatch] = useContext(Context)
     const [downloadURL,setDownloadURL] = useState(null)
-    const villageCodeList  = useRef(initvillageCodes)
-    const villageCodes  = villageCodeList.current
+    const [villageCodeList,setVillageCodeList]  = useState(initvillageCodes)
     initialState.registrationId = regId
     const validationSchema = Yup.object({
     registrationId: Yup.string().matches(/^RJ\d{8}$/,"Registration id is not in valid formate RJ_______ (8 digit)").required("registration is required"),
@@ -93,8 +92,8 @@ const AddDataNext = ({regId})=>{
     const fetchPromis = fetch("data.json")
       .then((response) => response.json())
       .then((values) => {
-        console.log(values)
-        villageCodeList.current = values
+        // console.log(values)
+        setVillageCodeList(values)
       });
       toast.promise(fetchPromis,{
         loading:"Village Data loading",
@@ -102,7 +101,7 @@ const AddDataNext = ({regId})=>{
         error:"Error while loading villages"
       })
   }, []);
-  
+
 
     const handleSubmit = async(landData)=>{
         if(!downloadURL){
@@ -137,7 +136,7 @@ const AddDataNext = ({regId})=>{
             
             if(e.target.name=='villageCode'){
                 console.log("here")
-                const result = villageCodes.find((village)=>village.code==e.target.value)
+                const result = villageCodeList.find((village)=>village.code==e.target.value)
                 console.log(result)                
                 formik.setFieldValue('villageCode',result)
             }
@@ -175,7 +174,7 @@ const AddDataNext = ({regId})=>{
                 <div className="input-group">
                     <label htmlFor="">Select Village</label>
                     <select name="villageCode" id=""   onChange={handleChange}>
-                    {villageCodes.map((village,index)=>{
+                    {villageCodeList.map((village,index)=>{
                         return (<option key={index} value={village.code}>{village.name}</option> )
                     })}
                     </select>
@@ -280,23 +279,46 @@ function Error({touched,errors,fieldName}) {
 const AddData  = ()=>{
     const [state,setState] = useState(false)
     const [regId,setRegId] = useState("")
-    const handleSubmit = async(e)=>{
-        e.preventDefault()
-        if(e.target.value!==""){
+
+    const validationSchema = Yup.object({
+        registrationId: Yup.string().matches(/^RJ\d{8}$/,"Registration id is not in valid formate RJ_______ (8 digit)").required("registration is required"),
+    })
+
+        
+    const formik = useFormik({
+        initialValues:{
+            registrationId:""
+        },
+        validationSchema,
+        onSubmit:(values,{resetForm})=>{
+            handleSubmit(values)
+            resetForm()
+            // console.log(values)
+        },
+    })
+    
+    
+
+
+
+    const handleSubmit = async(values)=>{
+        // e.preventDefault()
+        if(values.registrationId!==""){
             const toastId = toast.loading('Loading...');
             try {
-                const q = query(collection(db, "landData"), where("registrationId", "==", regId));
+                const q = query(collection(db, "landData"), where("registrationId", "==", values.registrationId));
                 const queryFetch = await getDocs(q);
                 const landEntry = await queryFetch.docs.map((doc)=>doc.data())[0]
 
                  
                     if(landEntry){
-                        toast.error("registeration no is already used")
+                        toast.error("registrationId no is already used")
                         toast.dismiss(toastId)
                         setRegId("")
                         return null
                     }else{
                         setState(true)
+                        setRegId(values.registrationId)
                         toast.success("Now you can enter details for this reg id")
                     }
                  toast.dismiss(toastId)   
@@ -305,6 +327,7 @@ const AddData  = ()=>{
               console.log(error)   
             }
         }
+        
 
     }
     
@@ -316,10 +339,11 @@ const AddData  = ()=>{
     return (
         <div className="form">
         
-            <form action="" onSubmit={handleSubmit}>
+            <form action="" onSubmit={formik.handleSubmit}>
                 <div className="input-group">
                     <label htmlFor="">Registeration No</label>
-                    <input type="text"  name="registerationId" value={regId} onChange={(e)=>setRegId(e.target.value)}/>
+                    <input type="text"  name="registrationId" value={formik.values.registrationId} onBlur={formik.handleBlur} onChange={formik.handleChange}/>
+                    <Error touched={formik.touched} errors={formik.errors} fieldName="registrationId"/>
                     <button type="submit">Next</button>
 
                 </div>
